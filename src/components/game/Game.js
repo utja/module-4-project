@@ -35,11 +35,15 @@ const Game = (props) => {
   var scoreText;
   var portals;
   var dot;
+  var lava;
+  var gameOverText;
+  var winText;
 
   var game = new Phaser.Game(config);
 
   function preload ()
   {
+      this.load.image('lava', './assets/lava.jpg')
       this.load.image('nature', './assets/nature.png')
       this.load.image('dot', './assets/dot.png')
       this.load.image('portal', './assets/portal.png')
@@ -50,6 +54,7 @@ const Game = (props) => {
       this.load.image('moolah', 'assets/moolah.png');
       this.load.image('bomb', 'assets/bomb.png');
       this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+      this.load.image('gameOver', 'assets/gameOver.png')
   }
 
   function create ()
@@ -61,6 +66,7 @@ const Game = (props) => {
       platforms = this.physics.add.staticGroup();
       portals = this.physics.add.staticGroup();
       dot = this.physics.add.staticGroup();
+      lava = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       platforms.create(50, 568, 'basicLedge').refreshBody();
@@ -78,6 +84,7 @@ const Game = (props) => {
       platforms.create(700, 230, 'ground');
       portals.create(710, 155, 'portal').setScale(.75).refreshBody();
       dot.create(735, 220, 'dot').setScale(.4).refreshBody();
+      lava.create(300, 640, 'lava')
 
       // portals.create(260, 460, 'portal').refreshBody();
 
@@ -143,6 +150,7 @@ const Game = (props) => {
       //
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
       this.physics.add.collider(player, dot, hitPortal, null, this)
+      this.physics.add.collider(player, lava, touchLava, null, this)
   }
 
   function update ()
@@ -177,6 +185,17 @@ const Game = (props) => {
       }
   }
 
+  function touchLava (player, lava)
+  {
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+
+    player.anims.play('turn');
+
+    this.add.image(420, 300, 'gameOver')
+  }
+
   function collectMoolah (player, moolah)
   {
       moolah.disableBody(true, true);
@@ -185,24 +204,24 @@ const Game = (props) => {
       score += 10;
       scoreText.setText('Score: ' + score);
 
-      if (moolahs.countActive(true) === 0)
-      {
-          //  A new batch of moolahs to collect
-          moolahs.children.iterate(function (child) {
-
-              child.enableBody(true, child.x, 0, true, true);
-
-          });
-
-          var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-          //
-          // var bomb = bombs.create(x, 16, 'bomb');
-          // bomb.setBounce(1);
-          // bomb.setCollideWorldBounds(true);
-          // bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-          // bomb.allowGravity = false;
-
-      }
+      // if (moolahs.countActive(true) === 0)
+      // {
+      //     //  A new batch of moolahs to collect
+      //     moolahs.children.iterate(function (child) {
+      //
+      //         child.enableBody(true, child.x, 0, true, true);
+      //
+      //     });
+      //
+      //     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+      //     //
+      //     // var bomb = bombs.create(x, 16, 'bomb');
+      //     // bomb.setBounce(1);
+      //     // bomb.setCollideWorldBounds(true);
+      //     // bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      //     // bomb.allowGravity = false;
+      //
+      // }
   }
 
   function hitBomb (player, bomb)
@@ -224,6 +243,7 @@ const Game = (props) => {
       this.physics.pause();
       player.setTint(0x00ffff);
       player.anims.play('turn');
+      winText = this.add.text(350, 300, 'Victory!',{ fontSize: '32px', fill: '#ff00d3' });
       //move next stage
       //timeout
   }
