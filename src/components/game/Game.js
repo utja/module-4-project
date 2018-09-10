@@ -26,7 +26,7 @@ const Game = (props) => {
   };
 
   var player;
-  var stars;
+  var moolahs;
   var bombs;
   var platforms;
   var cursors;
@@ -40,13 +40,14 @@ const Game = (props) => {
 
   function preload ()
   {
+      this.load.image('nature', './assets/nature.png')
       this.load.image('dot', './assets/dot.png')
       this.load.image('portal', './assets/portal.png')
       this.load.image('sky', './assets/sky.png');
       this.load.image('smallLedge', './assets/mapleSmallLedge.png')
       this.load.image('basicLedge', './assets/mapleBasicLedge.png')
       this.load.image('ground', 'assets/mapleLedge.png');
-      this.load.image('star', 'assets/star.png');
+      this.load.image('moolah', 'assets/moolah.png');
       this.load.image('bomb', 'assets/bomb.png');
       this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
   }
@@ -54,7 +55,7 @@ const Game = (props) => {
   function create ()
   {
       //  A simple background for our game
-      this.add.image(400, 300, 'sky');
+      this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
       platforms = this.physics.add.staticGroup();
@@ -75,8 +76,8 @@ const Game = (props) => {
       platforms.create(300, 245, 'smallLedge');
       platforms.create(490, 230, 'ground');
       platforms.create(700, 230, 'ground');
-      portals.create(750, 150, 'portal').setScale(-1).refreshBody();
-      dot.create(765, 120, 'dot').refreshBody();
+      portals.create(710, 155, 'portal').setScale(.75).refreshBody();
+      dot.create(735, 220, 'dot').setScale(.4).refreshBody();
 
       // portals.create(260, 460, 'portal').refreshBody();
 
@@ -112,33 +113,33 @@ const Game = (props) => {
       //  Input Events
       cursors = this.input.keyboard.createCursorKeys();
 
-      //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+      //  Some moolahs to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
 
-      // stars = this.physics.add.group({
-      //     key: 'star',
-      //     repeat: 11,
-      //     setXY: { x: 12, y: 0, stepX: 70 }
-      // });
-      //
-      // stars.children.iterate(function (child) {
-      //
-      //     //  Give each star a slightly different bounce
-      //     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-      //
-      // });
+      moolahs = this.physics.add.group({
+          key: 'moolah',
+          repeat: 10,
+          setXY: { x: 12, y: 0, stepX: 70 }
+      });
+
+      moolahs.children.iterate(function (child) {
+
+          //  Give each moolah a slightly different bounce
+          child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+      });
 
       bombs = this.physics.add.group();
 
       //  The score
       scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-      //  Collide the player and the stars with the platforms
+      //  Collide the player and the moolahs with the platforms
       this.physics.add.collider(player, platforms);
-      // this.physics.add.collider(stars, platforms);
+      this.physics.add.collider(moolahs, platforms);
       // this.physics.add.collider(bombs, platforms);
 
-      //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-      // this.physics.add.overlap(player, stars, collectStar, null, this);
+      //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
+      this.physics.add.overlap(player, moolahs, collectMoolah, null, this);
       //
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
       this.physics.add.collider(player, dot, hitPortal, null, this)
@@ -176,30 +177,30 @@ const Game = (props) => {
       }
   }
 
-  function collectStar (player, star)
+  function collectMoolah (player, moolah)
   {
-      star.disableBody(true, true);
+      moolah.disableBody(true, true);
 
       //  Add and update the score
       score += 10;
       scoreText.setText('Score: ' + score);
 
-      if (stars.countActive(true) === 0)
+      if (moolahs.countActive(true) === 0)
       {
-          //  A new batch of stars to collect
-          stars.children.iterate(function (child) {
+          //  A new batch of moolahs to collect
+          moolahs.children.iterate(function (child) {
 
               child.enableBody(true, child.x, 0, true, true);
 
           });
 
           var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-          var bomb = bombs.create(x, 16, 'bomb');
-          bomb.setBounce(1);
-          bomb.setCollideWorldBounds(true);
-          bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-          bomb.allowGravity = false;
+          //
+          // var bomb = bombs.create(x, 16, 'bomb');
+          // bomb.setBounce(1);
+          // bomb.setCollideWorldBounds(true);
+          // bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+          // bomb.allowGravity = false;
 
       }
   }
