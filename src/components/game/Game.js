@@ -203,9 +203,13 @@ const Game = (props) => {
     // debugger
     props.gameOver(score)
     button = this.add.image(400, 400, 'button').setInteractive();
-    button.on('pointerdown', restartGame); // Start game on click.﻿
-
-      // this.scene.restart()
+    let that = this
+    button.on('pointerdown', ()=>{
+      gameOver = true
+      that.scene.restart()
+      gameOver = false
+    });
+       // Start game on click.
 
     //
     // button.on('pointerover', function (event) { /* Do something when the mouse enters */ });
@@ -214,11 +218,11 @@ const Game = (props) => {
 
   }
 
-  function restartGame(){
-    gameOver = true
-    debugger
-    // this.scene.scene.restart()
-  }
+  // function restartGame(){
+  //   gameOver = true
+  //   // debugger
+  //   // this.scene.scene.restart()
+  // }
 
   // function moveOnRope (player, rope)
   // {
