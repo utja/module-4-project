@@ -13,7 +13,7 @@ const Game = (props) => {
       physics: {
           default: 'arcade',
           arcade: {
-              gravity: { y: 300 },
+              gravity: { y: 1000 },
               debug: false
           }
       },
@@ -33,13 +33,19 @@ const Game = (props) => {
   var score = 0;
   var gameOver = false;
   var scoreText;
+  var portals;
+  var dot;
 
   var game = new Phaser.Game(config);
 
   function preload ()
   {
+      this.load.image('dot', './assets/dot.png')
+      this.load.image('portal', './assets/portal.png')
       this.load.image('sky', './assets/sky.png');
-      this.load.image('ground', 'assets/platform.png');
+      this.load.image('smallLedge', './assets/mapleSmallLedge.png')
+      this.load.image('basicLedge', './assets/mapleBasicLedge.png')
+      this.load.image('ground', 'assets/mapleLedge.png');
       this.load.image('star', 'assets/star.png');
       this.load.image('bomb', 'assets/bomb.png');
       this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
@@ -52,18 +58,31 @@ const Game = (props) => {
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
       platforms = this.physics.add.staticGroup();
-
+      portals = this.physics.add.staticGroup();
+      dot = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-      platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+      platforms.create(50, 568, 'basicLedge').refreshBody();
+      // platforms.create(70, 568, 'ground')
 
       //  Now let's create some ledges
-      platforms.create(600, 400, 'ground');
-      platforms.create(50, 250, 'ground');
-      platforms.create(750, 220, 'ground');
+      platforms.create(160, 510, 'smallLedge');
+      platforms.create(260, 460, 'smallLedge');
+      platforms.create(440, 460, 'ground');
+      platforms.create(580, 410, 'smallLedge');
+      platforms.create(460, 355, 'smallLedge');
+      platforms.create(380, 300, 'smallLedge');
+      platforms.create(300, 245, 'smallLedge');
+      platforms.create(490, 230, 'ground');
+      platforms.create(700, 230, 'ground');
+      portals.create(750, 150, 'portal').setScale(-1).refreshBody();
+      dot.create(765, 120, 'dot').refreshBody();
+
+      // portals.create(260, 460, 'portal').refreshBody();
+
 
       // The player and its settings
-      player = this.physics.add.sprite(100, 450, 'dude');
+      player = this.physics.add.sprite(0, 450, 'dude');
 
       //  Player physics properties. Give the little guy a slight bounce.
       player.setBounce(0.2);
@@ -94,18 +113,19 @@ const Game = (props) => {
       cursors = this.input.keyboard.createCursorKeys();
 
       //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
-      stars = this.physics.add.group({
-          key: 'star',
-          repeat: 11,
-          setXY: { x: 12, y: 0, stepX: 70 }
-      });
 
-      stars.children.iterate(function (child) {
-
-          //  Give each star a slightly different bounce
-          child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-
-      });
+      // stars = this.physics.add.group({
+      //     key: 'star',
+      //     repeat: 11,
+      //     setXY: { x: 12, y: 0, stepX: 70 }
+      // });
+      //
+      // stars.children.iterate(function (child) {
+      //
+      //     //  Give each star a slightly different bounce
+      //     child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+      //
+      // });
 
       bombs = this.physics.add.group();
 
@@ -114,13 +134,14 @@ const Game = (props) => {
 
       //  Collide the player and the stars with the platforms
       this.physics.add.collider(player, platforms);
-      this.physics.add.collider(stars, platforms);
-      this.physics.add.collider(bombs, platforms);
+      // this.physics.add.collider(stars, platforms);
+      // this.physics.add.collider(bombs, platforms);
 
       //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-      this.physics.add.overlap(player, stars, collectStar, null, this);
-
-      this.physics.add.collider(player, bombs, hitBomb, null, this);
+      // this.physics.add.overlap(player, stars, collectStar, null, this);
+      //
+      // this.physics.add.collider(player, bombs, hitBomb, null, this);
+      this.physics.add.collider(player, dot, hitPortal, null, this)
   }
 
   function update ()
@@ -195,6 +216,15 @@ const Game = (props) => {
 
       props.gameOver(score)
 
+  }
+
+  function hitPortal (player, dot)
+  {
+      this.physics.pause();
+      player.setTint(0x00ffff);
+      player.anims.play('turn');
+      //move next stage
+      //timeout
   }
 
   return(
