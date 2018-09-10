@@ -38,7 +38,7 @@ const Game = (props) => {
   var lava;
   var gameOverText;
   var winText;
-  var rope;
+  var button;
 
   var game = new Phaser.Game(config);
 
@@ -58,6 +58,7 @@ const Game = (props) => {
       this.load.image('gameOver', 'assets/gameOver.png')
       this.load.image('victory', 'assets/victory.png')
       // this.load.image('rope', 'assets/rope.png')
+      this.load.image('button', 'assets/stitch.png')
   }
 
   function create ()
@@ -70,7 +71,7 @@ const Game = (props) => {
       portals = this.physics.add.staticGroup();
       dot = this.physics.add.staticGroup();
       lava = this.physics.add.staticGroup();
-      rope = this.physics.add.staticGroup();
+      // rope = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       platforms.create(50, 568, 'basicLedge').refreshBody();
@@ -199,6 +200,24 @@ const Game = (props) => {
     player.anims.play('turn');
 
     this.add.image(420, 300, 'gameOver')
+    // debugger
+    props.gameOver(score)
+    button = this.add.image(400, 400, 'button').setInteractive();
+    button.on('pointerdown', restartGame); // Start game on click.﻿
+
+      // this.scene.restart()
+
+    //
+    // button.on('pointerover', function (event) { /* Do something when the mouse enters */ });
+    // button.on('pointerout', function (event) { /* Do something when the mouse exits. */ });
+    // debugger
+
+  }
+
+  function restartGame(){
+    gameOver = true
+    debugger
+    // this.scene.scene.restart()
   }
 
   // function moveOnRope (player, rope)
@@ -265,6 +284,7 @@ const Game = (props) => {
       //move next stage
       //timeout
   }
+
 
   return(
     <div id="phaser-container">
