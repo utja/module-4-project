@@ -198,9 +198,16 @@ const Game = (props) => {
     this.add.image(420, 300, 'gameOver')
     // debugger
     props.gameOver(score)
+
+    function restartGame(){
+      gameOver = true
+      // debugger
+      this.scene.scene.restart()
+    }
+
     button = this.add.image(400, 400, 'button').setInteractive();
     button.on('pointerdown', restartGame); // Start game on click.﻿
-
+    // debugger
       // this.scene.restart()
 
     //
@@ -213,7 +220,7 @@ const Game = (props) => {
   function restartGame(){
     gameOver = true
     debugger
-    // this.scene.scene.restart()
+    this.scene.scene.restart()
   }
 
   function collectMoolah (player, moolah)
