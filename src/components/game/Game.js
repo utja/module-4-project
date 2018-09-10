@@ -38,6 +38,7 @@ const Game = (props) => {
   var lava;
   var gameOverText;
   var winText;
+  var button;
 
   var game = new Phaser.Game(config);
 
@@ -55,6 +56,7 @@ const Game = (props) => {
       this.load.image('bomb', 'assets/bomb.png');
       this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
       this.load.image('gameOver', 'assets/gameOver.png')
+      this.load.image('button', 'assets/stitch.png')
   }
 
   function create ()
@@ -194,6 +196,24 @@ const Game = (props) => {
     player.anims.play('turn');
 
     this.add.image(420, 300, 'gameOver')
+    // debugger
+    props.gameOver(score)
+    button = this.add.image(400, 400, 'button').setInteractive();
+    button.on('pointerdown', restartGame); // Start game on click.﻿
+
+      // this.scene.restart()
+
+    //
+    // button.on('pointerover', function (event) { /* Do something when the mouse enters */ });
+    // button.on('pointerout', function (event) { /* Do something when the mouse exits. */ });
+    // debugger
+
+  }
+
+  function restartGame(){
+    gameOver = true
+    debugger
+    // this.scene.scene.restart()
   }
 
   function collectMoolah (player, moolah)
@@ -244,9 +264,11 @@ const Game = (props) => {
       player.setTint(0x00ffff);
       player.anims.play('turn');
       winText = this.add.text(350, 300, 'Victory!',{ fontSize: '32px', fill: '#ff00d3' });
+      // this.add.button(400, 300, 'button', null, this, null, null, null)
       //move next stage
       //timeout
   }
+
 
   return(
     <div id="phaser-container">

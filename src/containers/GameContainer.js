@@ -13,8 +13,16 @@ class GameContainer extends React.Component {
 
   // this.game.cache.getText('level')
 
+  // componentDidMount(){
+  //   this.setState({level: 'start', score: 0})
+  // }
+
   gameOver = (score) => {
-    this.setState({level:'gameOver', score:score})
+    // this.setState({score:score})
+  }
+
+  startGame = () => {
+    this.setState({level: 'start', score:0}, ()=> console.log(this.state))
   }
 
   render(){
@@ -31,6 +39,7 @@ class GameContainer extends React.Component {
         return (
           <div className="gamecontainer">
             <h1>Score: {this.state.score}</h1>
+            <button onClick={this.startGame}>Play Again</button>
           </div>
         )
         break
