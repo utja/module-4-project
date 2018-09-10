@@ -128,7 +128,7 @@ const Game = (props) => {
 
       });
 
-      bombs = this.physics.add.group();
+      // bombs = this.physics.add.group();
 
       //  The score
       scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
