@@ -8,7 +8,7 @@ const Game = (props) => {
 
   var config = {
       type: Phaser.AUTO,
-      width: 800,
+      width: 1000,
       height: 600,
       physics: {
           default: 'arcade',
@@ -38,6 +38,7 @@ const Game = (props) => {
   var lava;
   var gameOverText;
   var winText;
+  var rope;
 
   var game = new Phaser.Game(config);
 
@@ -55,6 +56,8 @@ const Game = (props) => {
       this.load.image('bomb', 'assets/bomb.png');
       this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
       this.load.image('gameOver', 'assets/gameOver.png')
+      this.load.image('victory', 'assets/victory.png')
+      // this.load.image('rope', 'assets/rope.png')
   }
 
   function create ()
@@ -67,12 +70,12 @@ const Game = (props) => {
       portals = this.physics.add.staticGroup();
       dot = this.physics.add.staticGroup();
       lava = this.physics.add.staticGroup();
+      rope = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       platforms.create(50, 568, 'basicLedge').refreshBody();
       // platforms.create(70, 568, 'ground')
 
-      //  Now let's create some ledges
       platforms.create(160, 510, 'smallLedge');
       platforms.create(260, 460, 'smallLedge');
       platforms.create(440, 460, 'ground');
@@ -85,6 +88,7 @@ const Game = (props) => {
       portals.create(710, 155, 'portal').setScale(.75).refreshBody();
       dot.create(735, 220, 'dot').setScale(.4).refreshBody();
       lava.create(300, 640, 'lava')
+      // rope.create(100, 550, 'rope')
 
       // portals.create(260, 460, 'portal').refreshBody();
 
@@ -151,6 +155,7 @@ const Game = (props) => {
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
       this.physics.add.collider(player, dot, hitPortal, null, this)
       this.physics.add.collider(player, lava, touchLava, null, this)
+      // this.physics.add.collider(player, rope, moveOnRope, null, this)
   }
 
   function update ()
@@ -195,6 +200,19 @@ const Game = (props) => {
 
     this.add.image(420, 300, 'gameOver')
   }
+
+  // function moveOnRope (player, rope)
+  // {
+  //   if(cursors.up.isDown){
+  //     player.setVelocityY(-160);
+  //     player.anims.play('turn')
+  //   }else if(cursors.down.isDown){
+  //     player.setVelocityY(-160);
+  //     player.anims.play('turn')
+  //   }else{
+  //     return
+  //   }
+  // }
 
   function collectMoolah (player, moolah)
   {
@@ -243,7 +261,7 @@ const Game = (props) => {
       this.physics.pause();
       player.setTint(0x00ffff);
       player.anims.play('turn');
-      winText = this.add.text(350, 300, 'Victory!',{ fontSize: '32px', fill: '#ff00d3' });
+      this.add.image(400, 300, 'victory').setScale(.5)
       //move next stage
       //timeout
   }
