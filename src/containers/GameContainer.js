@@ -21,6 +21,10 @@ class GameContainer extends React.Component {
     // this.setState({score:score})
   }
 
+  shouldComponentUpdate() {
+    false
+  }
+
   startGame = () => {
     this.setState({level: 'start', score:0}, ()=> console.log(this.state))
   }

@@ -154,9 +154,19 @@ const Game = (props) => {
       this.physics.add.overlap(player, moolahs, collectMoolah, null, this);
       //
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
-      this.physics.add.collider(player, dot, hitPortal, null, this)
+      // this.physics.add.collider(player, dot, hitPortal, null, this)
       this.physics.add.collider(player, lava, touchLava, null, this)
       // this.physics.add.collider(player, rope, moveOnRope, null, this)
+
+      //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
+      this.physics.add.overlap(player, portals, enterPortal, null, this);
+  }
+
+  function enterPortal() {
+    if (cursors.up.isDown) {
+      // console.log('hello')
+
+    }
   }
 
   function update ()
@@ -240,7 +250,6 @@ const Game = (props) => {
   function collectMoolah (player, moolah)
   {
       moolah.disableBody(true, true);
-
       //  Add and update the score
       score += 10;
       scoreText.setText('Score: ' + score);
