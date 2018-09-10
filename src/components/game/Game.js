@@ -46,7 +46,7 @@ const Game = (props) => {
   {
       this.load.image('lava', './assets/lava.jpg')
       this.load.image('nature', './assets/nature.png')
-      this.load.image('dot', './assets/dot.png')
+      // this.load.image('dot', './assets/dot.png')
       this.load.image('portal', './assets/portal.png')
       this.load.image('sky', './assets/sky.png');
       this.load.image('smallLedge', './assets/mapleSmallLedge.png')
@@ -58,7 +58,7 @@ const Game = (props) => {
       this.load.image('gameOver', 'assets/gameOver.png')
       this.load.image('victory', 'assets/victory.png')
       // this.load.image('rope', 'assets/rope.png')
-      this.load.image('button', 'assets/stitch.png')
+      this.load.image('button', 'assets/replay.png')
   }
 
   function create ()
@@ -87,7 +87,7 @@ const Game = (props) => {
       platforms.create(490, 230, 'ground');
       platforms.create(700, 230, 'ground');
       portals.create(710, 155, 'portal').setScale(.75).refreshBody();
-      dot.create(735, 220, 'dot').setScale(.4).refreshBody();
+      // dot.create(735, 220, 'dot').setScale(.4).refreshBody();
       lava.create(300, 640, 'lava')
       // rope.create(100, 550, 'rope')
 
@@ -165,7 +165,10 @@ const Game = (props) => {
   function enterPortal() {
     if (cursors.up.isDown) {
       // console.log('hello')
-
+      this.physics.pause();
+      player.setTint(0x00ffff);
+      player.anims.play('turn');
+      this.add.image(500, 300, 'victory').setScale(.5)
     }
   }
 
@@ -212,7 +215,7 @@ const Game = (props) => {
     this.add.image(520, 300, 'gameOver')
     // debugger
     props.gameOver(score)
-    button = this.add.image(400, 400, 'button').setInteractive();
+    button = this.add.image(340, 250, 'button').setScale(.6).setInteractive();
     let that = this
     button.on('pointerdown', ()=>{
       gameOver = true
@@ -287,17 +290,6 @@ const Game = (props) => {
       props.gameOver(score)
 
   }
-
-  function hitPortal (player, dot)
-  {
-      this.physics.pause();
-      player.setTint(0x00ffff);
-      player.anims.play('turn');
-      this.add.image(500, 300, 'victory').setScale(.5)
-      //move next stage
-      //timeout
-  }
-
 
   return(
     <div id="phaser-container">
