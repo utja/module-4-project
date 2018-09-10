@@ -1,13 +1,15 @@
 import React from 'react'
 import Game from '../components/game/Game'
 
+const SCORESAPI = 'http://localhost:3000/api/v1/scores'
+
 class GameContainer extends React.Component {
 
   constructor(props){
     super(props)
     this.state = {
       level: 'start',
-      score: ''
+      score: 0
     }
   }
 
@@ -18,15 +20,19 @@ class GameContainer extends React.Component {
   // }
 
   gameOver = (score) => {
-    // this.setState({score:score})
+    let config = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({score: score, user_id: 1})
+    }
+    fetch(SCORESAPI, config).then(r => r.json()).then(resp => console.log(resp))
+
   }
 
   shouldComponentUpdate() {
     false
-  }
-
-  startGame = () => {
-    this.setState({level: 'start', score:0}, ()=> console.log(this.state))
   }
 
   render(){

@@ -4,7 +4,6 @@ var Phaser = require('../../../node_modules/phaser/src/phaser-arcade-physics.js'
 
 
 const Game = (props) => {
-  console.log('jumpman.js props', props)
 
   var config = {
       type: Phaser.AUTO,
