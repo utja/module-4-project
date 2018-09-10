@@ -209,7 +209,7 @@ const Game = (props) => {
 
     player.anims.play('turn');
 
-    this.add.image(420, 300, 'gameOver')
+    this.add.image(520, 300, 'gameOver')
     // debugger
     props.gameOver(score)
     button = this.add.image(400, 400, 'button').setInteractive();
@@ -293,7 +293,7 @@ const Game = (props) => {
       this.physics.pause();
       player.setTint(0x00ffff);
       player.anims.play('turn');
-      this.add.image(400, 300, 'victory').setScale(.5)
+      this.add.image(500, 300, 'victory').setScale(.5)
       //move next stage
       //timeout
   }
