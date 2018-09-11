@@ -38,6 +38,7 @@ const Game = (props) => {
   var gameOverText;
   var winText;
   var button;
+  var mySpace;
 
   var game = new Phaser.Game(config);
 
@@ -62,6 +63,9 @@ const Game = (props) => {
 
   function create ()
   {
+      console.log(Phaser.Input.Keyboard)
+      console.log(Phaser.Input.Keyboard.KeyCodes);
+
       //  A simple background for our game
       this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
 
@@ -95,6 +99,8 @@ const Game = (props) => {
 
       // The player and its settings
       player = this.physics.add.sprite(0, 450, 'dude');
+      mySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      // debugger
 
       //  Player physics properties. Give the little guy a slight bounce.
       player.setBounce(0.2);
@@ -120,6 +126,7 @@ const Game = (props) => {
           frameRate: 10,
           repeat: -1
       });
+
 
       //  Input Events
       cursors = this.input.keyboard.createCursorKeys();
@@ -197,10 +204,21 @@ const Game = (props) => {
           player.anims.play('turn');
       }
 
-      if (cursors.up.isDown && player.body.touching.down)
-      {
-          player.setVelocityY(-330);
+      // console.log(space)
+      // debugger
+      if (mySpace.isDown && player.body.touching.down) {
+        player.setVelocityY(-330);
       }
+
+      // if (cursors.up.isDown && player.body.touching.down)
+      // {
+      //     player.setVelocityY(-330);
+      // }
+  }
+
+
+  function jump(){
+    player.setVelocityY(-330);
   }
 
   function touchLava (player, lava)
