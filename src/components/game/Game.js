@@ -102,7 +102,7 @@ const Game = (props) => {
       trampoline.create(710, 200, 'trampoline').setScale(1)
       platforms.create(870, 100, 'basicLedge')
       platforms.create(980, 568, 'basicLedge')
-      portalSide.create(890, 510, 'portalSide').setScale(.75).refreshBody();
+      portals.create(890, 510, 'portal').setScale(.75).refreshBody();
       spike.create(890, 75, 'spike')
       dot.create(890, 80, 'dot').setScale(.4).refreshBody();
       // portals.create(940, 500, 'portal').setScale(.75).refreshBody();
@@ -180,7 +180,7 @@ const Game = (props) => {
       // this.physics.add.collider(player, rope, moveOnRope, null, this)
 
       //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
-      this.physics.add.overlap(player, portalSide, enterPortal, null, this);
+      this.physics.add.overlap(player, portals, enterPortal, null, this);
       this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
       this.physics.add.overlap(player, dot, touchLava, null, this)
 
