@@ -52,11 +52,11 @@ class ScoreContainer extends React.Component {
     } else {
       let scores = this.sortScores()
       return (
-        <div className="scorecontainer four wide column">
+        <div className="scorecontainer ui four wide column">
           <table className="ui teal table">
             <thead>
               <tr>
-                <th className="center aligned" colspan="2">High Scores</th>
+                <th className="center aligned" colSpan="2">High Scores</th>
               </tr>
               <tr>
                 <th>Name</th>
