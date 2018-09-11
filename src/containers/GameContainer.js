@@ -40,7 +40,7 @@ class GameContainer extends React.Component {
       case 'start':
         return (
           <div className="gamecontainer twelve wide column">
-            <h1>Totally Not A Random Game</h1>
+            <h1>Game of Thrones</h1>
             <Game gameOver={this.gameOver} changeGameState={this.props.changeGameState} />
             {/* <Game /> */}
           </div>

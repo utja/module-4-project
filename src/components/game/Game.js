@@ -39,6 +39,10 @@ const Game = (props) => {
   var winText;
   var button;
   var mySpace;
+  var rope;
+  var trampoline;
+  var portalSide;
+  var spike;
 
   var game = new Phaser.Game(config);
 
@@ -46,7 +50,7 @@ const Game = (props) => {
   {
       this.load.image('lava', './assets/lava.jpg')
       this.load.image('nature', './assets/nature.png')
-      // this.load.image('dot', './assets/dot.png')
+      this.load.image('dot', './assets/dot.png')
       this.load.image('portal', './assets/portal.png')
       this.load.image('sky', './assets/sky.png');
       this.load.image('smallLedge', './assets/mapleSmallLedge.png')
@@ -57,24 +61,29 @@ const Game = (props) => {
       this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
       this.load.image('gameOver', 'assets/gameOver.png')
       this.load.image('victory', 'assets/victory.png')
-      // this.load.image('rope', 'assets/rope.png')
+      this.load.image('rope', 'assets/rope.png')
       this.load.image('button', 'assets/replay.png')
+      this.load.image('trampoline', 'assets/trampoline.png')
+      this.load.image('portalSide', 'assets/portalSide.png')
+      this.load.image('spike', 'assets/spike.png')
   }
 
   function create ()
   {
-      console.log(Phaser.Input.Keyboard)
-      console.log(Phaser.Input.Keyboard.KeyCodes);
-
+      // debugger
+      // this.cameras.main.followOffset(player, Phaser.Cameras.Scene2D.Camera.FOLLOW_LOCKON, 0.1, 0.1);
       //  A simple background for our game
       this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
       platforms = this.physics.add.staticGroup();
       portals = this.physics.add.staticGroup();
-      dot = this.physics.add.staticGroup();
+      portalSide = this.physics.add.staticGroup();
+      rope = this.physics.add.staticGroup();
       lava = this.physics.add.staticGroup();
-      // rope = this.physics.add.staticGroup();
+      dot = this.physics.add.staticGroup();
+      trampoline = this.physics.add.staticGroup();
+      spike = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       platforms.create(50, 568, 'basicLedge').refreshBody();
@@ -89,8 +98,14 @@ const Game = (props) => {
       platforms.create(300, 245, 'smallLedge');
       platforms.create(490, 230, 'ground');
       platforms.create(700, 230, 'ground');
-      portals.create(710, 155, 'portal').setScale(.75).refreshBody();
-      // dot.create(735, 220, 'dot').setScale(.4).refreshBody();
+      platforms.create(50, 568, 'basicLedge')
+      trampoline.create(710, 200, 'trampoline').setScale(1)
+      platforms.create(870, 100, 'basicLedge')
+      platforms.create(980, 568, 'basicLedge')
+      portalSide.create(890, 510, 'portalSide').setScale(.75).refreshBody();
+      spike.create(890, 75, 'spike')
+      dot.create(890, 80, 'dot').setScale(.4).refreshBody();
+      // portals.create(940, 500, 'portal').setScale(.75).refreshBody();
       lava.create(300, 640, 'lava')
       // rope.create(100, 550, 'rope')
 
@@ -135,7 +150,7 @@ const Game = (props) => {
 
       moolahs = this.physics.add.group({
           key: 'moolah',
-          repeat: 10,
+          repeat: 9,
           setXY: { x: 12, y: 0, stepX: 70 }
       });
 
@@ -165,10 +180,17 @@ const Game = (props) => {
       // this.physics.add.collider(player, rope, moveOnRope, null, this)
 
       //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
-      this.physics.add.overlap(player, portals, enterPortal, null, this);
+      this.physics.add.overlap(player, portalSide, enterPortal, null, this);
+      this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
+      this.physics.add.overlap(player, dot, touchLava, null, this)
+  }
+
+  function trampolineJump(){
+    player.setVelocityY(-450);
   }
 
   function enterPortal() {
+    player.setVelocityY(1000)
     if (cursors.up.isDown) {
       // console.log('hello')
       this.physics.pause();
@@ -206,7 +228,7 @@ const Game = (props) => {
 
       // console.log(space)
       // debugger
-      if (mySpace.isDown && player.body.touching.down) {
+      if (mySpace.isDown && player.body.blocked.down) {
         player.setVelocityY(-330);
       }
 
