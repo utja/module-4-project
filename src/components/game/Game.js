@@ -106,15 +106,18 @@ const Game = (props) => {
       platforms.create(700, 230, 'ground');
       platforms.create(50, 568, 'basicLedge')
       trampoline.create(710, 200, 'trampoline').setScale(1)
-      platforms.create(870, 100, 'basicLedge')
+      platforms.create(870, 140, 'basicLedge')
       platforms.create(980, 568, 'basicLedge')
       portals.create(960, 485, 'portal').setScale(.75).refreshBody();
-      spike.create(890, 75, 'spike')
-      dot.create(890, 80, 'dot').setScale(.4).refreshBody();
+      spike.create(880, 115, 'spike')
+      spike.create(900, 115, 'spike')
+      spike.create(890, 115, 'spike')
+      dot.create(890, 120, 'dot').setScale(.4).refreshBody();
       // portals.create(940, 500, 'portal').setScale(.75).refreshBody();
       lava.create(300, 640, 'lava')
       lava.create(300, 1757, 'lava')
       lava.create(1494, 1757, 'lava')
+      platforms.create(100, 1600, 'basicLedge')
       // lava.create(1000, 1757, 'lava').setScale(1, 1.5)
       // lava.create(1500, 1757, 'lava').setScale(1, 1.5)
       // rope.create(100, 550, 'rope')
@@ -122,8 +125,19 @@ const Game = (props) => {
       // portals.create(260, 460, 'portal').refreshBody();
 
 
-      // The player and its settings
-      player = this.physics.add.sprite(1000, 1600, 'dude');
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
+      //change the dude
+      player = this.physics.add.sprite(0, 450, 'dude');
+      //*************************************************************
+      //*************************************************************
+      //*************************************************************
       mySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
       // debugger
 
@@ -187,7 +201,7 @@ const Game = (props) => {
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
       // this.physics.add.collider(player, dot, hitPortal, null, this)
 
-      // this.physics.add.collider(player, lava, touchLava, null, this)
+      this.physics.add.collider(player, lava, touchLava, null, this)
 
       // this.physics.add.collider(player, rope, moveOnRope, null, this)
       //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
@@ -246,7 +260,7 @@ const Game = (props) => {
       // console.log(space)
       // debugger
 //&& player.body.blocked.down
-      if (mySpace.isDown) {
+      if (mySpace.isDown && player.body.blocked.down) {
         player.setVelocityY(-330);
       }
 
