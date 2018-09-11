@@ -235,6 +235,7 @@ const Game = (props) => {
 
       // console.log(space)
       // debugger
+
       if (mySpace.isDown && player.body.blocked.down) {
         player.setVelocityY(-330);
       }
