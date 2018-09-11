@@ -102,7 +102,7 @@ const Game = (props) => {
       trampoline.create(710, 200, 'trampoline').setScale(1)
       platforms.create(870, 100, 'basicLedge')
       platforms.create(980, 568, 'basicLedge')
-      portals.create(890, 510, 'portal').setScale(.75).refreshBody();
+      portals.create(960, 485, 'portal').setScale(.75).refreshBody();
       spike.create(890, 75, 'spike')
       dot.create(890, 80, 'dot').setScale(.4).refreshBody();
       // portals.create(940, 500, 'portal').setScale(.75).refreshBody();
