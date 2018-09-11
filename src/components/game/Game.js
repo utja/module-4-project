@@ -44,6 +44,7 @@ const Game = (props) => {
   var portalSide;
   var spike;
   var camera;
+  var rKey;
 
   var game = new Phaser.Game(config);
 
@@ -139,6 +140,8 @@ const Game = (props) => {
       //*************************************************************
       //*************************************************************
       mySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+      // debugger
+      rKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
       // debugger
 
       //  Player physics properties. Give the little guy a slight bounce.
@@ -284,18 +287,33 @@ const Game = (props) => {
 
     // this.add.image(520, 300, 'gameOver')
     this.add.image(camera.midPoint.x, camera.midPoint.y, 'gameOver')
-    // debugger
-    props.gameOver(score)
-    // button = this.add.image(340, 250, 'button').setScale(.6).setInteractive();
-    button = this.add.image(camera.midPoint.x - 180, camera.midPoint.y - 50, 'button').setScale(.6).setInteractive();
+    debugger
+    console.log(rKey.isDown)
+
     let that = this
-    button.on('pointerdown', ()=>{
-      gameOver = true
-      score = 0
-      props.changeGameState()
-      that.scene.restart()
-      gameOver = false
-    });
+
+    if(!rKey.isDown){
+        touchLava(player, lava)
+    }else{
+        props.gameOver(score)
+        gameOver = true
+        props.changeGameState()
+        this.scene.restart()
+        gameOver = false
+    }
+    // debugger
+    // button = this.add.image(340, 250, 'button').setScale(.6).setInteractive();
+
+    //
+    // button = this.add.image(camera.midPoint.x - 180, camera.midPoint.y - 50, 'button').setScale(.6).setInteractive();
+    // let that = this
+    // button.on('pointerdown', ()=>{
+    //   gameOver = true
+    //   score = 0
+    //   props.changeGameState()
+    //   that.scene.restart()
+    //   gameOver = false
+    // });
        // Start game on click.
 
     //
