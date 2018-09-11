@@ -68,17 +68,19 @@ const Game = (props) => {
       this.load.image('portalSide', 'assets/portalSide.png')
       this.load.image('spike', 'assets/spike.png')
       this.load.image('map', 'assets/niceMap.png')
-      this.load.image('level2', 'assets/level2.png')
+      this.load.image('level2', 'assets/ocean.jpg')
+      this.load.image('level3', 'assets/temple.jpg')
   }
 
   function create ()
   {
-      this.physics.world.setBounds(0,0, 1000, 1200)
+      this.physics.world.setBounds(0,0, 2500, 700)
       // debugger
       // this.cameras.main.followOffset(player, Phaser.Cameras.Scene2D.Camera.FOLLOW_LOCKON, 0.1, 0.1);
       //  A simple background for our game
       this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
-      this.add.image(400, 1200, 'level2').setScale(2).refreshBody;
+      // this.add.image(600, 900, 'level2').setScale(.3).refreshBody;
+      this.add.image(1500, 300, 'level3').setScale(.8).refreshBody;
       // this.add.image(400, 300, 'map').refreshBody
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -240,8 +242,8 @@ const Game = (props) => {
 
       // console.log(space)
       // debugger
-
-      if (mySpace.isDown && player.body.blocked.down) {
+//&& player.body.blocked.down
+      if (mySpace.isDown) {
         player.setVelocityY(-330);
       }
 
