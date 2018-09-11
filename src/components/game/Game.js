@@ -183,6 +183,9 @@ const Game = (props) => {
       this.physics.add.overlap(player, portalSide, enterPortal, null, this);
       this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
       this.physics.add.overlap(player, dot, touchLava, null, this)
+
+      this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2);
+      this.cameras.main.startFollow(player, true, 0.05, 0.05);
   }
 
   function trampolineJump(){
