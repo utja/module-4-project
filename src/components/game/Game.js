@@ -43,6 +43,7 @@ const Game = (props) => {
   var trampoline;
   var portalSide;
   var spike;
+  var camera;
 
   var game = new Phaser.Game(config);
 
@@ -67,15 +68,17 @@ const Game = (props) => {
       this.load.image('portalSide', 'assets/portalSide.png')
       this.load.image('spike', 'assets/spike.png')
       this.load.image('map', 'assets/niceMap.png')
+      this.load.image('level2', 'assets/level2.png')
   }
 
   function create ()
   {
-      this.physics.world.setBounds(0,0, 1920*2, 1000*2)
+      this.physics.world.setBounds(0,0, 1000, 1200)
       // debugger
       // this.cameras.main.followOffset(player, Phaser.Cameras.Scene2D.Camera.FOLLOW_LOCKON, 0.1, 0.1);
       //  A simple background for our game
       this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
+      this.add.image(400, 1200, 'level2').setScale(2).refreshBody;
       // this.add.image(400, 300, 'map').refreshBody
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -180,16 +183,16 @@ const Game = (props) => {
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
       // this.physics.add.collider(player, dot, hitPortal, null, this)
 
-      this.physics.add.collider(player, lava, touchLava, null, this)
+      // this.physics.add.collider(player, lava, touchLava, null, this)
 
       // this.physics.add.collider(player, rope, moveOnRope, null, this)
       //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
       this.physics.add.overlap(player, portals, enterPortal, null, this);
       this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
       this.physics.add.overlap(player, dot, touchLava, null, this)
-
-      this.cameras.main.setBounds(0, 0, 1920 * 2, 1080 * 2);
-      this.cameras.main.startFollow(player, true, 0.05, 0.05);
+      camera = this.cameras.main
+      camera.setBounds(0, 0, 1920 * 2, 1080 * 2);
+      camera.startFollow(player, true, 0.05, 0.05);
   }
 
   function trampolineJump(){
@@ -200,10 +203,12 @@ const Game = (props) => {
     player.setVelocityY(450)
     if (cursors.up.isDown) {
       // console.log('hello')
-      this.physics.pause();
-      player.setTint(0x00ffff);
-      player.anims.play('turn');
-      this.add.image(500, 300, 'victory').setScale(.5)
+      // this.physics.pause();
+      // player.setTint(0x00ffff);
+      // player.anims.play('turn');
+      // this.add.image(camera.midPoint.x, camera.midPoint.y, 'victory').setScale(.5)
+      player.x = 100
+      player.y = 700
     }
   }
 
@@ -235,7 +240,12 @@ const Game = (props) => {
 
       // console.log(space)
       // debugger
-      if (mySpace.isDown && player.body.blocked.down) {
+      // if (mySpace.isDown && player.body.blocked.down) {
+      //   player.setVelocityY(-330);
+      // }
+
+      // enable flying
+      if (mySpace.isDown) {
         player.setVelocityY(-330);
       }
 
@@ -257,10 +267,12 @@ const Game = (props) => {
 
     player.anims.play('turn');
 
-    this.add.image(520, 300, 'gameOver')
+    // this.add.image(520, 300, 'gameOver')
+    this.add.image(camera.midPoint.x, camera.midPoint.y, 'gameOver')
     // debugger
     props.gameOver(score)
-    button = this.add.image(340, 250, 'button').setScale(.6).setInteractive();
+    // button = this.add.image(340, 250, 'button').setScale(.6).setInteractive();
+    button = this.add.image(camera.midPoint.x - 180, camera.midPoint.y - 50, 'button').setScale(.6).setInteractive();
     let that = this
     button.on('pointerdown', ()=>{
       gameOver = true
