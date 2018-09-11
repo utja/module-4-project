@@ -27,12 +27,12 @@ class GameContainer extends React.Component {
       },
       body: JSON.stringify({score: score, user_id: 1})
     }
-    fetch(SCORESAPI, config).then(r => r.json()).then(resp => console.log(resp))
+    fetch(SCORESAPI, config).then(r => r.json())
 
   }
 
   shouldComponentUpdate() {
-    false
+    return false
   }
 
   render(){
@@ -40,7 +40,7 @@ class GameContainer extends React.Component {
       case 'start':
         return (
           <div className="gamecontainer">
-            <Game gameOver={this.gameOver}/>
+            <Game gameOver={this.gameOver} changeGameState={this.props.changeGameState} />
             {/* <Game /> */}
           </div>
         )

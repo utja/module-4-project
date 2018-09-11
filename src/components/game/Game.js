@@ -206,7 +206,6 @@ const Game = (props) => {
   function touchLava (player, lava)
   {
     this.physics.pause();
-
     player.setTint(0xff0000);
 
     player.anims.play('turn');
@@ -218,6 +217,8 @@ const Game = (props) => {
     let that = this
     button.on('pointerdown', ()=>{
       gameOver = true
+      score = 0
+      props.changeGameState()
       that.scene.restart()
       gameOver = false
     });

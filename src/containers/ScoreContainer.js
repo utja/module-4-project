@@ -14,8 +14,21 @@ class ScoreContainer extends React.Component {
 
   componentDidMount(){
     fetch(SCORESAPI).then(r => r.json()).then(data =>
-    this.setState({scores: data, loading:false}, ()=>console.log(this.state)))
+    this.setState({scores: data, loading:false}))
   }
+
+  componentDidUpdate(prevProps, prevState){
+    if (this.props !== prevProps) {
+      fetch(SCORESAPI).then(r => r.json()).then(data =>
+      this.setState({scores: data, loading:false}))
+    }
+  }
+
+  // shouldComponentUpdate(nextProps, nextState){
+    // if(this.props.gameState !== nextProps.gameState){
+    //   true
+    // }
+  // }
 
   // map through data, create <Score />
   sortScores = () => {
