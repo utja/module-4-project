@@ -6,7 +6,10 @@
     "phaser": "^3.12.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "semantic-ui": "^2.3.3",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.82.4"
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",

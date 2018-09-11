@@ -45,15 +45,28 @@ class ScoreContainer extends React.Component {
     if (this.state.loading){
       return (
 
-        <div className="scorecontainer">
+        <div className="scorecontainer four wide column">
           <h1>LOADING SCORES</h1>
         </div>
       )
     } else {
       let scores = this.sortScores()
       return (
-        <div className="scorecontainer">
-          {scores}
+        <div className="scorecontainer four wide column">
+          <table className="ui teal table">
+            <thead>
+              <tr>
+                <th className="center aligned" colspan="2">High Scores</th>
+              </tr>
+              <tr>
+                <th>Name</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {scores}
+            </tbody>
+          </table>
         </div>
       )
     }

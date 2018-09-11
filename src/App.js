@@ -18,7 +18,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App ui grid">
         <GameContainer changeGameState={this.changeGameState}/>
         <ScoreContainer gameState={this.state.gameState}/>
       </div>

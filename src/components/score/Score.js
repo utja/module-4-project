@@ -5,7 +5,10 @@ const Score = (props) => {
   // console.log('score props', props)
 
   return(
-    <h1>{props.score.user.name}: {props.score.score}</h1>
+      <tr>
+        <td>{props.score.user.name}</td>
+        <td>{props.score.score}</td>
+      </tr>
   )
 }
 
