@@ -18,9 +18,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App ui grid">
-        <GameContainer changeGameState={this.changeGameState}/>
-        <ScoreContainer gameState={this.state.gameState}/>
+      <div>
+        <h1 className="ui blue center aligned header">Totally Not A Random Game</h1>
+        <div className="App ui grid">
+          <GameContainer changeGameState={this.changeGameState}/>
+          <ScoreContainer gameState={this.state.gameState}/>
+        </div>
       </div>
     );
   }

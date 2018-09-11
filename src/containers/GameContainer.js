@@ -39,8 +39,8 @@ class GameContainer extends React.Component {
     switch (this.state.level) {
       case 'start':
         return (
-          <div className="gamecontainer twelve wide column">
-            <h1>Totally Not A Random Game</h1>
+          <div className="gamecontainer twelve wide column ui">
+            {/* <h1 className="ui header">Totally Not A Random Game</h1> */}
             <Game gameOver={this.gameOver} changeGameState={this.props.changeGameState} />
             {/* <Game /> */}
           </div>
