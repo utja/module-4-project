@@ -214,6 +214,17 @@ const Game = (props) => {
       camera = this.cameras.main
       camera.setBounds(0, 0, 1920 * 2, 1080 * 2);
       camera.startFollow(player, true, 0.05, 0.05);
+
+      let that = this
+      this.input.keyboard.on('keydown_R', function (event) {
+
+        props.gameOver(score)
+        gameOver = true
+        props.changeGameState()
+        that.scene.restart()
+        gameOver = false
+
+      });
   }
 
   function trampolineJump(){
@@ -287,20 +298,20 @@ const Game = (props) => {
 
     // this.add.image(520, 300, 'gameOver')
     this.add.image(camera.midPoint.x, camera.midPoint.y, 'gameOver')
-    debugger
+    // debugger
     console.log(rKey.isDown)
 
     let that = this
 
-    if(!rKey.isDown){
-        touchLava(player, lava)
-    }else{
-        props.gameOver(score)
-        gameOver = true
-        props.changeGameState()
-        this.scene.restart()
-        gameOver = false
-    }
+    // if(true){
+      // debugger
+      // console.log('hello')
+      // props.gameOver(score)
+      // gameOver = true
+      // props.changeGameState()
+      // that.scene.restart()
+      // gameOver = false
+    // }
     // debugger
     // button = this.add.image(340, 250, 'button').setScale(.6).setInteractive();
 
