@@ -68,19 +68,17 @@ const Game = (props) => {
       this.load.image('portalSide', 'assets/portalSide.png')
       this.load.image('spike', 'assets/spike.png')
       this.load.image('map', 'assets/niceMap.png')
-      this.load.image('level2', 'assets/ocean.jpg')
-      this.load.image('level3', 'assets/temple.jpg')
+      this.load.image('lava-level', 'assets/lava-level.jpg')
   }
 
   function create ()
   {
-      this.physics.world.setBounds(0,0, 2500, 700)
+      this.physics.world.setBounds(0,0, 19000 * 2, 1800)
       // debugger
       // this.cameras.main.followOffset(player, Phaser.Cameras.Scene2D.Camera.FOLLOW_LOCKON, 0.1, 0.1);
       //  A simple background for our game
       this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
-      // this.add.image(600, 900, 'level2').setScale(.3).refreshBody;
-      this.add.image(1500, 300, 'level3').setScale(.8).refreshBody;
+      this.add.image(800, 1500, 'lava-level').setScale(2, 1.6).refreshBody;
       // this.add.image(400, 300, 'map').refreshBody
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -115,13 +113,17 @@ const Game = (props) => {
       dot.create(890, 80, 'dot').setScale(.4).refreshBody();
       // portals.create(940, 500, 'portal').setScale(.75).refreshBody();
       lava.create(300, 640, 'lava')
+      lava.create(300, 1757, 'lava')
+      lava.create(1494, 1757, 'lava')
+      // lava.create(1000, 1757, 'lava').setScale(1, 1.5)
+      // lava.create(1500, 1757, 'lava').setScale(1, 1.5)
       // rope.create(100, 550, 'rope')
 
       // portals.create(260, 460, 'portal').refreshBody();
 
 
       // The player and its settings
-      player = this.physics.add.sprite(0, 450, 'dude');
+      player = this.physics.add.sprite(1000, 1600, 'dude');
       mySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
       // debugger
 
@@ -210,7 +212,8 @@ const Game = (props) => {
       // player.anims.play('turn');
       // this.add.image(camera.midPoint.x, camera.midPoint.y, 'victory').setScale(.5)
       player.x = 100
-      player.y = 700
+      player.y = 1300
+      camera.centerOn(100, 1500)
     }
   }
 
