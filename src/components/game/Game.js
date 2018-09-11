@@ -66,14 +66,17 @@ const Game = (props) => {
       this.load.image('trampoline', 'assets/trampoline.png')
       this.load.image('portalSide', 'assets/portalSide.png')
       this.load.image('spike', 'assets/spike.png')
+      this.load.image('map', 'assets/niceMap.png')
   }
 
   function create ()
   {
+      this.physics.world.setBounds(0,0, 1920*2, 1000*2)
       // debugger
       // this.cameras.main.followOffset(player, Phaser.Cameras.Scene2D.Camera.FOLLOW_LOCKON, 0.1, 0.1);
       //  A simple background for our game
       this.add.image(400, 300, 'nature').setScale(1.4).refreshBody;
+      // this.add.image(400, 300, 'map').refreshBody
 
       //  The platforms group contains the ground and the 2 ledges we can jump on
       platforms = this.physics.add.staticGroup();
@@ -176,9 +179,10 @@ const Game = (props) => {
       //
       // this.physics.add.collider(player, bombs, hitBomb, null, this);
       // this.physics.add.collider(player, dot, hitPortal, null, this)
-      this.physics.add.collider(player, lava, touchLava, null, this)
-      // this.physics.add.collider(player, rope, moveOnRope, null, this)
 
+      this.physics.add.collider(player, lava, touchLava, null, this)
+
+      // this.physics.add.collider(player, rope, moveOnRope, null, this)
       //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
       this.physics.add.overlap(player, portals, enterPortal, null, this);
       this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
@@ -189,11 +193,11 @@ const Game = (props) => {
   }
 
   function trampolineJump(){
-    player.setVelocityY(-450);
+    player.setVelocityY(-460);
   }
 
   function enterPortal() {
-    player.setVelocityY(1000)
+    player.setVelocityY(450)
     if (cursors.up.isDown) {
       // console.log('hello')
       this.physics.pause();
@@ -243,7 +247,7 @@ const Game = (props) => {
 
 
   function jump(){
-    player.setVelocityY(-330);
+    player.setVelocityY(-300);
   }
 
   function touchLava (player, lava)
