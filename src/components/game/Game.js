@@ -46,6 +46,8 @@ const Game = (props) => {
   var camera;
   var rKey;
   var newDot;
+  var rock;
+  var firstPortal;
 
   var game = new Phaser.Game(config);
 
@@ -63,7 +65,7 @@ const Game = (props) => {
     this.load.image('gate10', './assets/gates/gate10.png');
     this.load.image('gate11', './assets/gates/gate11.png');
     this.load.image('gate12', './assets/gates/gate12.png');
-
+      this.load.image('rock', './assets/rock.png')
       this.load.image('lava', './assets/lava.jpg')
       this.load.image('nature', './assets/nature.png')
       this.load.image('dot', './assets/dot.png')
@@ -99,13 +101,15 @@ const Game = (props) => {
       //  The platforms group contains the ground and the 2 ledges we can jump on
       platforms = this.physics.add.staticGroup();
       portals = this.physics.add.staticGroup();
-      portalSide = this.physics.add.staticGroup();
+      // portalSide = this.physics.add.staticGroup();
       rope = this.physics.add.staticGroup();
       lava = this.physics.add.staticGroup();
       dot = this.physics.add.staticGroup();
       trampoline = this.physics.add.staticGroup();
       spike = this.physics.add.staticGroup();
       newDot = this.physics.add.staticGroup();
+      rock = this.physics.add.staticGroup();
+      firstPortal = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       platforms.create(50, 568, 'basicLedge').refreshBody();
@@ -124,16 +128,47 @@ const Game = (props) => {
       trampoline.create(710, 200, 'trampoline').setScale(1)
       platforms.create(870, 140, 'basicLedge')
       platforms.create(980, 568, 'basicLedge')
-      // portals.create(960, 485, 'portal').setScale(.75).refreshBody();
-      spike.create(880, 115, 'spike')
-      spike.create(900, 115, 'spike')
-      spike.create(890, 115, 'spike')
-      dot.create(890, 120, 'dot').setScale(.4).refreshBody();
+      firstPortal.create(960, 485, 'portal').setScale(.75).refreshBody();
+      function createSpike(x, y){
+        spike.create(x-10, y, 'spike')
+        spike.create(x+10, y, 'spike')
+        spike.create(x, y, 'spike')
+        dot.create(x, y+5, 'dot').setScale(.4).refreshBody();
+      }
+      createSpike(890, 115)
+
+      // spike.create(880, 115, 'spike')
+      // spike.create(900, 115, 'spike')
+      // spike.create(890, 115, 'spike')
+      // dot.create(890, 120, 'dot').setScale(.4).refreshBody();
       // portals.create(940, 500, 'portal').setScale(.75).refreshBody();
       lava.create(300, 640, 'lava')
       lava.create(300, 1757, 'lava')
       lava.create(1494, 1757, 'lava')
       platforms.create(100, 1600, 'basicLedge')
+      platforms.create(250, 1550, 'rock')
+      platforms.create(380, 1500, 'rock')
+      platforms.create(480, 1700, 'rock')
+      platforms.create(600, 1700, 'basicLedge')
+      createSpike(590, 1675)
+      platforms.create(680, 1700, 'basicLedge')
+      trampoline.create(690, 1670, 'trampoline').setScale(1)
+      platforms.create(840, 1580, 'rock')
+      platforms.create(980, 1542, 'rock')
+      platforms.create(1120, 1580, 'rock')
+      platforms.create(1260, 1600, 'rock')
+      platforms.create(1359, 1550, 'rock')
+      platforms.create(1510, 1600, 'basicLedge')
+      platforms.create(1460, 1600, 'basicLedge')
+      platforms.create(1550, 1600, 'basicLedge')
+      createSpike(1480, 1575)
+      createSpike(1430, 1575)
+      createSpike(1450, 1575)
+      portals.create(1540, 1520, 'portal').setScale(.75).refreshBody();
+      platforms.create(550, 1400, 'basicLedge')
+      platforms.create(580, 1400, 'basicLedge')
+
+
 
     this.anims.create({
         key: 'gate',
@@ -155,8 +190,8 @@ const Game = (props) => {
         repeat: -1
     });
 
-    this.add.sprite(980, 500, 'gate1').setScale(.7).play('gate');
-    newDot.create(980, 515, 'dot').setScale(.4).refreshBody();
+    this.add.sprite(550, 1330, 'gate1').setScale(.7).play('gate');
+    newDot.create(550, 1345, 'dot').setScale(.4).refreshBody();
       // lava.create(1000, 1757, 'lava').setScale(1, 1.5)
       // lava.create(1500, 1757, 'lava').setScale(1, 1.5)
       // rope.create(100, 550, 'rope')
@@ -173,7 +208,7 @@ const Game = (props) => {
       //*************************************************************
       //*************************************************************
       //change the dude
-      player = this.physics.add.sprite(0, 450, 'dude');
+      player = this.physics.add.sprite(0, 300, 'dude');
       //*************************************************************
       //*************************************************************
       //*************************************************************
@@ -249,6 +284,8 @@ const Game = (props) => {
       this.physics.add.overlap(player, newDot, enterPortal, null, this);
       this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
       this.physics.add.overlap(player, dot, touchLava, null, this)
+      this.physics.add.overlap(player, portals, portal2, null, this)
+      this.physics.add.overlap(player, firstPortal, portal1, null, this)
       camera = this.cameras.main
       camera.setBounds(0, 0, 1920 * 2, 1080 * 2);
       camera.startFollow(player, true, 0.05, 0.05);
@@ -269,7 +306,7 @@ const Game = (props) => {
     player.setVelocityY(-460);
   }
 
-  function enterPortal() {
+  function portal1() {
     player.setVelocityY(450)
     if (cursors.up.isDown) {
       // console.log('hello')
@@ -279,7 +316,32 @@ const Game = (props) => {
       // this.add.image(camera.midPoint.x, camera.midPoint.y, 'victory').setScale(.5)
       player.x = 100
       player.y = 1300
-      camera.centerOn(100, 1500)
+      camera.centerOn(100, 1300)
+    }
+  }
+
+  function portal2() {
+    player.setVelocityY(450)
+    if (cursors.up.isDown) {
+      // console.log('hello')
+      // this.physics.pause();
+      // player.setTint(0x00ffff);
+      // player.anims.play('turn');
+      // this.add.image(camera.midPoint.x, camera.midPoint.y, 'victory').setScale(.5)
+      player.x = 600
+      player.y = 1300
+      camera.centerOn(600, 1300)
+    }
+  }
+
+  function enterPortal() {
+    player.setVelocityY(450)
+    if (cursors.up.isDown) {
+      // console.log('hello')
+      this.physics.pause();
+      player.setTint(0x00ffff);
+      player.anims.play('turn');
+      this.add.image(camera.midPoint.x, camera.midPoint.y, 'victory').setScale(.5)
     }
   }
 
@@ -314,7 +376,7 @@ const Game = (props) => {
       if (mySpace.isDown && player.body.blocked.down) {
         player.setVelocityY(-330);
       }
-
+      //
       // if (mySpace.isDown) {
       //   player.setVelocityY(-330);
       // }
