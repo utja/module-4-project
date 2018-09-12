@@ -45,11 +45,25 @@ const Game = (props) => {
   var spike;
   var camera;
   var rKey;
+  var newDot;
 
   var game = new Phaser.Game(config);
 
   function preload ()
   {
+    this.load.image('gate1', './assets/gates/gate1.png');
+    this.load.image('gate2', './assets/gates/gate2.png');
+    this.load.image('gate3', './assets/gates/gate3.png');
+    this.load.image('gate4', './assets/gates/gate4.png');
+    this.load.image('gate5', './assets/gates/gate5.png');
+    this.load.image('gate6', './assets/gates/gate6.png');
+    this.load.image('gate7', './assets/gates/gate7.png');
+    this.load.image('gate8', './assets/gates/gate8.png');
+    this.load.image('gate9', './assets/gates/gate9.png');
+    this.load.image('gate10', './assets/gates/gate10.png');
+    this.load.image('gate11', './assets/gates/gate11.png');
+    this.load.image('gate12', './assets/gates/gate12.png');
+
       this.load.image('lava', './assets/lava.jpg')
       this.load.image('nature', './assets/nature.png')
       this.load.image('dot', './assets/dot.png')
@@ -91,6 +105,7 @@ const Game = (props) => {
       dot = this.physics.add.staticGroup();
       trampoline = this.physics.add.staticGroup();
       spike = this.physics.add.staticGroup();
+      newDot = this.physics.add.staticGroup();
       //  Here we create the ground.
       //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
       platforms.create(50, 568, 'basicLedge').refreshBody();
@@ -109,7 +124,7 @@ const Game = (props) => {
       trampoline.create(710, 200, 'trampoline').setScale(1)
       platforms.create(870, 140, 'basicLedge')
       platforms.create(980, 568, 'basicLedge')
-      portals.create(960, 485, 'portal').setScale(.75).refreshBody();
+      // portals.create(960, 485, 'portal').setScale(.75).refreshBody();
       spike.create(880, 115, 'spike')
       spike.create(900, 115, 'spike')
       spike.create(890, 115, 'spike')
@@ -119,6 +134,29 @@ const Game = (props) => {
       lava.create(300, 1757, 'lava')
       lava.create(1494, 1757, 'lava')
       platforms.create(100, 1600, 'basicLedge')
+
+    this.anims.create({
+        key: 'gate',
+        frames: [
+            { key: 'gate1' },
+            { key: 'gate2' },
+            { key: 'gate3' },
+            { key: 'gate4' },
+            { key: 'gate5' },
+            { key: 'gate6' },
+            { key: 'gate7' },
+            { key: 'gate8' },
+            { key: 'gate9' },
+            { key: 'gate10' },
+            { key: 'gate11' },
+            { key: 'gate12', duration: 50 },
+        ],
+        frameRate: 8,
+        repeat: -1
+    });
+
+    this.add.sprite(980, 500, 'gate1').setScale(.7).play('gate');
+    newDot.create(980, 515, 'dot').setScale(.4).refreshBody();
       // lava.create(1000, 1757, 'lava').setScale(1, 1.5)
       // lava.create(1500, 1757, 'lava').setScale(1, 1.5)
       // rope.create(100, 550, 'rope')
@@ -208,7 +246,7 @@ const Game = (props) => {
 
       // this.physics.add.collider(player, rope, moveOnRope, null, this)
       //  Checks to see if the player overlaps with any of the moolahs, if he does call the collectMoolah function
-      this.physics.add.overlap(player, portals, enterPortal, null, this);
+      this.physics.add.overlap(player, newDot, enterPortal, null, this);
       this.physics.add.overlap(player, trampoline, trampolineJump, null, this);
       this.physics.add.overlap(player, dot, touchLava, null, this)
       camera = this.cameras.main
@@ -272,11 +310,14 @@ const Game = (props) => {
       }
 
       // console.log(space)
-      // debugger
-//&& player.body.blocked.down
+
       if (mySpace.isDown && player.body.blocked.down) {
         player.setVelocityY(-330);
       }
+
+      // if (mySpace.isDown) {
+      //   player.setVelocityY(-330);
+      // }
 
       // if (cursors.up.isDown && player.body.touching.down)
       // {
